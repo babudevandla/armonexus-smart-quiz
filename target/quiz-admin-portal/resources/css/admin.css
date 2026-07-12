@@ -1,0 +1,242 @@
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+}
+.layout { display: flex; min-height: 100vh; }
+
+.sidebar {
+    width: 250px;
+    background: #1f2937;
+    color: #d1d5db;
+    padding: 16px 0;
+    overflow-y: auto;
+}
+.sidebar-brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    padding: 0 20px 16px;
+    border-bottom: 1px solid #374151;
+    margin-bottom: 10px;
+}
+.nav-menu { list-style: none; margin: 0; padding: 0; }
+.nav-menu > li > a {
+    display: block;
+    padding: 10px 20px;
+    color: #d1d5db;
+    text-decoration: none;
+    font-weight: 600;
+}
+.nav-menu > li > a:hover { background: #374151; }
+.nav-group-title {
+    display: block;
+    padding: 10px 20px 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    letter-spacing: .05em;
+}
+.nav-group ul { list-style: none; margin: 0; padding: 0; }
+.nav-group ul li a {
+    display: block;
+    padding: 8px 20px 8px 32px;
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+.nav-group ul li a:hover { background: #374151; }
+
+.main { flex: 1; display: flex; flex-direction: column; }
+.topbar {
+    background: #fff;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+.topbar-title { font-size: 18px; font-weight: 700; }
+.topbar-user { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+
+.content { padding: 24px; }
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    margin-bottom: 20px;
+}
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.stat-card .stat-value { font-size: 28px; font-weight: 700; color: #2563eb; }
+.stat-card .stat-label { color: #6b7280; font-size: 13px; text-transform: uppercase; }
+
+table.data-table { width: 100%; border-collapse: collapse; }
+table.data-table th, table.data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    font-size: 14px;
+}
+table.data-table th { background: #f9fafb; font-weight: 600; }
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-danger { background: #dc2626; }
+.btn-success { background: #16a34a; }
+.btn-secondary { background: #6b7280; }
+.btn-link { background: none; color: #2563eb; border: none; cursor: pointer; padding: 0; }
+
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
+.form-control {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+.checkbox-list { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.alert { padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 14px; }
+.alert-success { background: #dcfce7; color: #166534; }
+.alert-danger { background: #fee2e2; color: #991b1b; }
+
+.badge { padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.badge-approved { background: #dcfce7; color: #166534; }
+.badge-pending { background: #fef9c3; color: #854d0e; }
+.badge-rejected { background: #fee2e2; color: #991b1b; }
+.badge-draft { background: #e5e7eb; color: #374151; }
+
+/* ======================================================================
+   Sidebar toggle button (hamburger) — shown in the topbar on every page
+   ====================================================================== */
+.sidebar-toggle-btn {
+    display: none; /* only shown on mobile by default; see media query below */
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin-right: 8px;
+}
+.sidebar-toggle-btn span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #1f2937;
+    border-radius: 2px;
+}
+.topbar-user-email { word-break: break-all; }
+
+/* Backdrop shown behind the sidebar on mobile when it's open */
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 40;
+}
+
+/* ======================================================================
+   DataTables: match the existing admin look, and make the generated
+   controls (search box, pagination) wrap sanely at small widths.
+   ====================================================================== */
+.table-scroll-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.dataTables_wrapper { font-size: 14px; }
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 4px 10px !important;
+    margin-left: 4px;
+    border-radius: 6px !important;
+    cursor: pointer;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #2563eb !important;
+    color: #fff !important;
+    border-color: #2563eb !important;
+}
+.dataTables_wrapper .dataTables_info { color: #6b7280; font-size: 13px; }
+
+/* ======================================================================
+   Responsive / mobile layout
+   ====================================================================== */
+@media (max-width: 768px) {
+    .sidebar-toggle-btn { display: flex; }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 50;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        width: 250px;
+        box-shadow: 2px 0 12px rgba(0,0,0,0.2);
+    }
+    body.sidebar-open .sidebar { transform: translateX(0); }
+    body.sidebar-open .sidebar-backdrop { display: block; }
+
+    .layout { display: block; } /* stack instead of side-by-side flex */
+    .main { width: 100%; }
+
+    .topbar { padding: 12px 16px; flex-wrap: wrap; }
+    .topbar-title { font-size: 16px; }
+    .topbar-user { font-size: 12px; gap: 8px; }
+
+    .content { padding: 14px; }
+
+    .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-card { padding: 14px; }
+    .stat-card .stat-value { font-size: 22px; }
+
+    .card { padding: 14px; }
+
+    /* Forms: stack any side-by-side field rows the individual JSPs built
+       with inline flex styles, so labels/inputs don't get squeezed. */
+    .form-group[style*="display:flex"],
+    .form-group > div[style*="display:flex"] {
+        flex-direction: column !important;
+    }
+
+    table.data-table th, table.data-table td {
+        padding: 8px 6px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .btn { padding: 7px 12px; font-size: 13px; }
+    .topbar-user-email { display: none; } /* keep the topbar from wrapping on very small phones */
+}
+
+.stat-card.stat-primary .stat-value { color: #2563eb; }
+.stat-card.stat-success .stat-value { color: #16a34a; }
+.stat-card.stat-warning .stat-value { color: #ea580c; }
+.stat-card.stat-danger .stat-value { color: #dc2626; }

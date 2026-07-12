@@ -1,0 +1,339 @@
+/* ==========================================================================
+   Quiz Admin Portal — theme overlay, loaded AFTER Bootstrap + DataTables.
+   Bootstrap supplies the base component behavior (buttons, cards, forms,
+   alerts, badges, collapse) because the JSPs already use Bootstrap-named
+   classes (.btn, .card, .form-control, .alert). This file only adds the
+   color palette, the sidebar/topbar chrome, and small custom pieces
+   (stat cards, status badges, sidebar accordion) that Bootstrap doesn't
+   provide out of the box.
+   ========================================================================== */
+
+:root {
+    --brand-navy:      #1e2a5e;
+    --brand-navy-dark: #141c40;
+    --brand-accent:    #4f6df5;
+    --brand-accent-2:  #7c3aed;
+    --brand-gold:      #bf953f;
+
+    --surface:         #f5f7fb;
+    --surface-card:    #ffffff;
+    --border-soft:     #e5e9f2;
+    --text-muted:      #6b7280;
+
+    --success: #16a34a;
+    --warning: #d97706;
+    --danger:  #dc2626;
+    --info:    #0284c7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", "Inter", Arial, sans-serif;
+    background: var(--surface);
+    color: #1f2937;
+}
+
+a { text-decoration: none; }
+
+.layout { display: flex; min-height: 100vh; }
+
+/* ==========================================================================
+   Sidebar — dark navy with accent highlight, accordion nav groups
+   ========================================================================== */
+.sidebar {
+    width: 264px;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, var(--brand-navy) 0%, var(--brand-navy-dark) 100%);
+    color: #cbd3ee;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    letter-spacing: .02em;
+}
+.sidebar-brand .bi { font-size: 22px; color: var(--brand-gold); }
+
+.sidebar-scroll { flex: 1; overflow-y: auto; padding: 10px 0 24px; }
+.sidebar-scroll::-webkit-scrollbar { width: 6px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+.nav-menu { list-style: none; margin: 0; padding: 0; }
+
+/* top-level single links (Dashboard, Profile) */
+.nav-link-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    color: #d7deee;
+    font-weight: 600;
+    font-size: 14px;
+    border-left: 3px solid transparent;
+}
+.nav-link-top:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.nav-link-top.active {
+    background: rgba(79,109,245,0.18);
+    color: #fff;
+    border-left-color: var(--brand-accent);
+}
+.nav-link-top .bi { font-size: 16px; width: 18px; text-align: center; }
+
+/* group toggle headers */
+.nav-group-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    color: #d7deee;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+.nav-group-title:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.nav-group-title .bi:first-child { font-size: 16px; width: 18px; text-align: center; }
+.nav-group-title span { flex: 1; }
+.nav-group-title .chevron {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+    color: #9aa4c7;
+}
+.nav-group-title.expanded { background: rgba(255,255,255,0.05); color: #fff; }
+.nav-group-title.expanded .chevron { transform: rotate(180deg); }
+
+.nav-group ul { list-style: none; margin: 0; padding: 4px 0 8px; background: rgba(0,0,0,0.15); }
+.nav-group ul li a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 20px 8px 34px;
+    color: #b9c2e0;
+    font-size: 13.5px;
+}
+.nav-group ul li a .bi-dot { font-size: 18px; margin-left: -6px; color: #6b76a8; }
+.nav-group ul li a .bi-plus-circle { font-size: 13px; color: var(--brand-gold); }
+.nav-group ul li a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.nav-group ul li a.active {
+    background: rgba(79,109,245,0.2);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Main column: topbar + content
+   ========================================================================== */
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.topbar {
+    background: var(--surface-card);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-soft);
+    box-shadow: 0 1px 2px rgba(16,24,64,0.04);
+}
+.topbar-title { font-size: 18px; font-weight: 700; color: #111827; }
+.topbar-user { font-size: 13px; }
+.topbar-user-email { font-weight: 500; }
+
+.content { padding: 24px; }
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+.card {
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(16,24,64,0.06);
+    margin-bottom: 20px;
+}
+.card, .card-body { padding: 20px; }
+.card h3, .card h4 { color: #111827; }
+
+/* ==========================================================================
+   Stat cards (dashboards)
+   ========================================================================== */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(16,24,64,0.06);
+    position: relative;
+    overflow: hidden;
+}
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    background: var(--brand-accent);
+}
+.stat-card.stat-success::before { background: var(--success); }
+.stat-card.stat-warning::before { background: var(--warning); }
+.stat-card.stat-danger::before  { background: var(--danger); }
+.stat-card.stat-info::before    { background: var(--info); }
+.stat-card .stat-value { font-size: 28px; font-weight: 700; color: var(--brand-navy); }
+.stat-card .stat-label { color: var(--text-muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; }
+.stat-card .stat-icon {
+    position: absolute; top: 16px; right: 16px;
+    font-size: 26px; color: var(--border-soft);
+}
+
+/* ==========================================================================
+   Buttons — recolor Bootstrap's defaults to the brand palette
+   ========================================================================== */
+.btn-primary, .btn.btn:not([class*="btn-outline"]):not([class*="btn-secondary"]):not([class*="btn-danger"]):not([class*="btn-success"]):not([class*="btn-link"]) {
+    background-color: var(--brand-accent);
+    border-color: var(--brand-accent);
+}
+.btn-primary:hover { background-color: #3c56d6; border-color: #3c56d6; }
+.btn-success { background-color: var(--success); border-color: var(--success); }
+.btn-danger  { background-color: var(--danger);  border-color: var(--danger); }
+.btn-secondary { background-color: #6b7280; border-color: #6b7280; }
+.btn-link { color: var(--brand-accent); }
+.btn-sm { padding: 4px 10px; font-size: 12.5px; }
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: #374151; }
+.form-control:focus { border-color: var(--brand-accent); box-shadow: 0 0 0 0.2rem rgba(79,109,245,0.15); }
+.checkbox-list { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ==========================================================================
+   Status badges (approval/quiz-schedule states) — layered on top of
+   Bootstrap's .badge base class
+   ========================================================================== */
+.badge-approved { background: #dcfce7; color: #166534; }
+.badge-pending  { background: #fef9c3; color: #854d0e; }
+.badge-rejected { background: #fee2e2; color: #991b1b; }
+.badge-draft    { background: #e5e7eb; color: #374151; }
+
+/* ==========================================================================
+   Tables (DataTables auto-adds table/table-hover classes; this refines look)
+   ========================================================================== */
+table.data-table thead th {
+    background: #f8f9fc;
+    color: #374151;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    border-bottom: 2px solid var(--border-soft);
+}
+table.data-table td { font-size: 14px; vertical-align: middle; }
+table.data-table tbody tr:hover { background: #f6f8ff; }
+
+/* ==========================================================================
+   Sidebar toggle button (hamburger) — shown in the topbar on every page
+   ========================================================================== */
+.sidebar-toggle-btn {
+    display: none; /* only shown on mobile/tablet; see media query below */
+    border: none;
+    background: none;
+    padding: 4px 8px;
+    margin-right: 8px;
+}
+
+/* Backdrop shown behind the sidebar on mobile/tablet when it's open */
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.5);
+    z-index: 1040;
+}
+
+/* ==========================================================================
+   DataTables: match the theme; wrap wide tables so they scroll on mobile
+   ========================================================================== */
+.table-scroll-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.dataTables_wrapper { font-size: 14px; padding-top: 4px; }
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 13px;
+}
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 3px 6px;
+    font-size: 13px;
+}
+.dataTables_wrapper .dataTables_paginate .page-link { color: var(--brand-navy); }
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
+    background-color: var(--brand-accent);
+    border-color: var(--brand-accent);
+}
+.dataTables_wrapper .dataTables_info { color: var(--text-muted); font-size: 13px; }
+
+/* ==========================================================================
+   Responsive / mobile & tablet layout
+   ========================================================================== */
+@media (max-width: 992px) {
+    .sidebar-toggle-btn { display: inline-flex; align-items: center; }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1045;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        width: 270px;
+        box-shadow: 4px 0 16px rgba(0,0,0,0.25);
+    }
+    body.sidebar-open .sidebar { transform: translateX(0); }
+    body.sidebar-open .sidebar-backdrop { display: block; }
+
+    .layout { display: block; } /* stack instead of side-by-side flex */
+    .main { width: 100%; }
+}
+
+@media (max-width: 768px) {
+    .topbar { padding: 12px 16px; }
+    .topbar-title { font-size: 16px; }
+    .topbar-user { font-size: 12px; }
+
+    .content { padding: 14px; }
+
+    .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-card { padding: 14px; }
+    .stat-card .stat-value { font-size: 22px; }
+
+    .card, .card-body { padding: 14px; }
+
+    /* Forms: stack any side-by-side field rows the individual JSPs built
+       with inline flex styles, so labels/inputs don't get squeezed. */
+    .form-group[style*="display:flex"],
+    .form-group > div[style*="display:flex"] {
+        flex-direction: column !important;
+    }
+
+    table.data-table th, table.data-table td {
+        padding: 8px 6px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .btn { padding: 7px 12px; font-size: 13px; }
+    .topbar-user-email { display: none; } /* keep the topbar from wrapping on very small phones */
+}
