@@ -1,4 +1,4 @@
-# Online Quiz / Exam Management — Admin Portal (Spring Boot + JSP)
+# ArmoNexus Online Smart Quiz / Admin Portal
 
 A Spring Boot admin application that lets administrators and instructors manage quizzes, questions, users, schedules, reports, notifications and announcements. The UI is server-side rendered using JSPs and the application uses Spring Security, Spring Data JPA (Hibernate) and MySQL.
 
