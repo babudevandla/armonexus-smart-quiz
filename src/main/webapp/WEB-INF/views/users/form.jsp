@@ -15,18 +15,15 @@
 
         <div class="form-group">
             <label>Email</label>
-            <form:input path="email" type="email" cssClass="form-control" required="required"/>
+            <form:input path="email" type="email" cssClass="form-control" required="required" readonly="true"/>
         </div>
 
         <div class="form-group">
             <label>Phone</label>
-            <form:input path="phone" cssClass="form-control"/>
+            <form:input path="phone" cssClass="form-control" readonly="true"/>
         </div>
 
-        <div class="form-group">
-            <label>Password ${user.id != null ? '(leave blank to keep current password)' : ''}</label>
-            <form:password path="password" cssClass="form-control" showPassword="true"/>
-        </div>
+
 
         <div class="form-group">
             <label>Roles</label>
@@ -34,7 +31,7 @@
                 <c:forEach var="role" items="${allRoles}">
                     <label>
                         <input type="checkbox" name="roleIds" value="${role.id}"
-                               <c:if test="${selectedRoleIds.contains(role.id)}">checked</c:if>>
+                               <c:if test="${selectedRoleIds.contains(role.id)}">checked</c:if> disabled>
                         ${role.name}
                     </label>
                 </c:forEach>
