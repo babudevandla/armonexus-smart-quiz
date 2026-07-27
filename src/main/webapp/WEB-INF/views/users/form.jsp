@@ -20,23 +20,30 @@
 
         <div class="form-group">
             <label>Phone</label>
-            <form:input path="phone" cssClass="form-control" readonly="true"/>
+            <form:input path="phone" cssClass="form-control" />
         </div>
 
 
+<div class="form-group">
+    <label>Roles</label>
+    <div class="checkbox-list">
+        <c:forEach var="role" items="${allRoles}">
+            <label>
+                <input type="checkbox"
+                       name="roleIds"
+                       value="${role.id}"
+                       disabled="disabled"
+                       <c:if test="${selectedRoleIds.contains(role.id)}">checked</c:if>>
+                ${role.name}
+            </label>
 
-        <div class="form-group">
-            <label>Roles</label>
-            <div class="checkbox-list">
-                <c:forEach var="role" items="${allRoles}">
-                    <label>
-                        <input type="checkbox" name="roleIds" value="${role.id}"
-                               <c:if test="${selectedRoleIds.contains(role.id)}">checked</c:if> disabled>
-                        ${role.name}
-                    </label>
-                </c:forEach>
-            </div>
-        </div>
+            <!-- Hidden field to submit the selected roles -->
+            <c:if test="${selectedRoleIds.contains(role.id)}">
+                <input type="hidden" name="roleIds" value="${role.id}"/>
+            </c:if>
+        </c:forEach>
+    </div>
+</div>
 
         <div class="form-group">
             <label><form:checkbox path="enabled"/> Enabled</label>
