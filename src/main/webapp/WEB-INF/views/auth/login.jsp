@@ -59,10 +59,10 @@
 
         <div class="mt-4 pt-3 border-top" style="font-size:12px; color:#6b7280;">
             <strong>Demo accounts (seeded on first run):</strong><br>
-            <i class="bi bi-shield-lock-fill text-primary"></i> Admin: admin@quizapp.com / Admin@123<br>
-            <i class="bi bi-easel-fill text-primary"></i> Instructor: instructor@quizapp.com / Instructor@123<br>
-            <i class="bi bi-clipboard-check-fill text-primary"></i> Reviewer: reviewer@quizapp.com / Reviewer@123<br>
-            <i class="bi bi-person-fill text-primary"></i> Candidate: candidate@quizapp.com / Candidate@123
+            <i class="bi bi-shield-lock-fill text-primary"></i> Admin: admin1@quizapp.com / Password@123<br>
+            <i class="bi bi-easel-fill text-primary"></i> Instructor: instructor1@quizapp.com / Password@123<br>
+            <i class="bi bi-clipboard-check-fill text-primary"></i> Reviewer: reviewer1@quizapp.com / Password@123<br>
+            <i class="bi bi-person-fill text-primary"></i> Candidate: candidate1@quizapp.com / Password@123
         </div>
     </div>
 </div>
