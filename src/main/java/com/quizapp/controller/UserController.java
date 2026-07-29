@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
         Set<Long> selectedRoleIds = new HashSet<>();
         for (Role r : user.getRoles()) {
@@ -73,14 +73,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable("id") Long id,
+                         RedirectAttributes redirectAttributes) {
         userService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully.");
         return "redirect:/users";
     }
 
     @GetMapping("/{id}/toggle")
-    public String toggle(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String toggle(@PathVariable("id") Long id,
+                         RedirectAttributes redirectAttributes) {
         userService.toggleEnabled(id);
         redirectAttributes.addFlashAttribute("successMessage", "User status updated.");
         return "redirect:/users";
