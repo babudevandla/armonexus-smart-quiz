@@ -8,7 +8,7 @@
         <form:hidden path="id"/>
         <div class="form-group">
             <label>Role Name (e.g. ROLE_ADMIN)</label>
-            <form:input path="name" cssClass="form-control" required="required"/>
+            <form:input path="name" cssClass="form-control" required="required" readonly="true" />
         </div>
         <div class="form-group">
             <label>Description</label>
