@@ -13,7 +13,7 @@
        <strong>Passing Marks:</strong> ${quiz.passingMarks}</p>
 </div>
 
-<form id="quizForm" method="post" action="${pageContext.request.contextPath}/student/quizzes/${quiz.id}/submit">
+<form id="quizForm" method="post" action="${pageContext.request.contextPath}/candidate/quizzes/${quiz.id}/submit">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
     <c:forEach var="qq" items="${quiz.quizQuestions}" varStatus="i">

@@ -17,7 +17,7 @@
                         <td>${p.title}</td>
                         <td>${p.subject != null ? p.subject.name : '-'}</td>
                         <td>${p.description}</td>
-                        <td><a class="btn btn-sm" href="${pageContext.request.contextPath}/student/practice/${p.id}/take">Start Practice</a></td>
+                        <td><a class="btn btn-sm" href="${pageContext.request.contextPath}/candidate/practice/${p.id}/take">Start Practice</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>

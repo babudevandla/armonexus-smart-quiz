@@ -16,9 +16,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/student")
+@RequestMapping("/candidate")
 @RequiredArgsConstructor
-public class StudentController {
+public class CandidateController {
 
     private final UserRepository userRepository;
     private final QuizRepository quizRepository;
@@ -40,7 +40,7 @@ public class StudentController {
         model.addAttribute("recentResults", quizResultRepository.findByUserIdAndSubmittedAtIsNotNull(me.getId()));
         model.addAttribute("practiceSets", practiceSetRepository.findAll().stream()
                 .filter(PracticeSet::getActive).toList());
-        return "student/dashboard";
+        return "candidate/dashboard";
     }
 
     // ---------- Available quizzes ----------
@@ -51,7 +51,7 @@ public class StudentController {
         List<Quiz> quizzes = assignedQuizzesFor(me);
         model.addAttribute("quizzes", quizzes);
         model.addAttribute("quizStatusMap", quizScheduleStatusService.buildStatusMap(quizzes));
-        return "student/quizzes";
+        return "candidate/quizzes";
     }
 
     private List<Quiz> assignedQuizzesFor(User user) {
@@ -83,13 +83,13 @@ public class StudentController {
         ScheduleStatus status = quizScheduleStatusService.resolveStatus(id);
         if (!status.isStartable()) {
             redirectAttributes.addFlashAttribute("errorMessage", scheduleMessage(status));
-            return "redirect:/student/quizzes";
+            return "redirect:/candidate/quizzes";
         }
 
         User me = currentUser(authentication);
 
         // Write an "in progress" row (submittedAt still null) the moment the
-        // student opens the quiz, so Live Monitoring can actually see them.
+        // candidate opens the quiz, so Live Monitoring can actually see them.
         // If they reload/reopen the same quiz, reuse the existing row instead
         // of creating duplicates.
         quizResultRepository.findFirstByQuizIdAndUserIdAndSubmittedAtIsNull(id, me.getId())
@@ -104,7 +104,7 @@ public class StudentController {
                         .build()));
 
         model.addAttribute("quiz", quiz);
-        return "student/quiz-take";
+        return "candidate/quiz-take";
     }
 
     @PostMapping("/quizzes/{id}/submit")
@@ -121,7 +121,7 @@ public class StudentController {
         ScheduleStatus status = quizScheduleStatusService.resolveStatus(id);
         if (!status.isStartable()) {
             redirectAttributes.addFlashAttribute("errorMessage", scheduleMessage(status));
-            return "redirect:/student/quizzes";
+            return "redirect:/candidate/quizzes";
         }
 
         int totalMarks = 0;
@@ -147,7 +147,7 @@ public class StudentController {
 
         boolean passed = scoreObtained >= quiz.getPassingMarks();
 
-        // Reuse the "in progress" row created when the student opened the
+        // Reuse the "in progress" row created when the candidate opened the
         // quiz (so it disappears from Live Monitoring the moment they
         // submit) — falling back to creating a fresh row if, for some
         // reason, none was found.
@@ -168,7 +168,7 @@ public class StudentController {
         redirectAttributes.addFlashAttribute("successMessage",
                 "Quiz submitted! Score: " + scoreObtained + " / " + totalMarks +
                 (passed ? " — Passed" : " — Not passed"));
-        return "redirect:/student/results";
+        return "redirect:/candidate/results";
     }
 
     private String scheduleMessage(ScheduleStatus status) {
@@ -185,7 +185,7 @@ public class StudentController {
     public String myResults(Authentication authentication, Model model) {
         User me = currentUser(authentication);
         model.addAttribute("results", quizResultRepository.findByUserIdAndSubmittedAtIsNotNull(me.getId()));
-        return "student/results";
+        return "candidate/results";
     }
 
     // ---------- Practice ----------
@@ -194,7 +194,7 @@ public class StudentController {
     public String practiceSets(Model model) {
         model.addAttribute("practiceSets", practiceSetRepository.findAll().stream()
                 .filter(PracticeSet::getActive).toList());
-        return "student/practice";
+        return "candidate/practice";
     }
 
     @GetMapping("/practice/{id}/take")
@@ -210,7 +210,7 @@ public class StudentController {
 
         model.addAttribute("practiceSet", practiceSet);
         model.addAttribute("questions", questions);
-        return "student/practice-take";
+        return "candidate/practice-take";
     }
 
     @PostMapping("/practice/{id}/submit")
@@ -252,14 +252,14 @@ public class StudentController {
         redirectAttributes.addFlashAttribute("successMessage",
                 "Practice submitted! You scored " + correct + " / " + total +
                 " (" + String.format("%.1f", scorePercent) + "%)");
-        return "redirect:/student/practice-history";
+        return "redirect:/candidate/practice-history";
     }
 
     @GetMapping("/practice-history")
     public String practiceHistory(Authentication authentication, Model model) {
         User me = currentUser(authentication);
         model.addAttribute("attempts", practiceAttemptRepository.findByUserId(me.getId()));
-        return "student/practice-history";
+        return "candidate/practice-history";
     }
 
     private User currentUser(Authentication authentication) {

@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Single source of truth for "is this quiz open right now" — used by the
- * Student quiz-taking flow AND by every admin-facing screen that lists
+ * Candidate quiz-taking flow AND by every admin-facing screen that lists
  * quizzes, so the schedule window is enforced and displayed consistently
  * everywhere in the app.
  */

@@ -34,7 +34,7 @@ This admin portal supports:
   - Admin: full system management, user & role management, settings, generate reports, send notifications.
   - Instructor: create and manage questions, practice sets, schedule quizzes.
   - Reviewer: review and approve submitted questions.
-  - Student (indirect): takes quizzes and receives notifications — results are visible to admin/instructors.
+  - Candidate (indirect): takes quizzes and receives notifications — results are visible to admin/instructors.
 
 Example user stories:
 
@@ -88,7 +88,7 @@ Default seeded logins (created automatically on first run by `DataSeeder`) — o
 | Admin      | admin@quizapp.com         | Admin@123        | `/dashboard`          |
 | Instructor | instructor@quizapp.com    | Instructor@123   | `/instructor/dashboard` |
 | Reviewer   | reviewer@quizapp.com      | Reviewer@123     | `/reviewer/dashboard` |
-| Student    | student@quizapp.com       | Student@123      | `/student/dashboard`  |
+| Candidate    | candidate@quizapp.com       | Candidate@123      | `/candidate/dashboard`  |
 
 `DashboardController` inspects the logged-in user's authority and redirects to
 the right role dashboard automatically — there's one login form, but four
@@ -123,26 +123,26 @@ Logs. This is the module tree from the original spec, entirely implemented.
 - `/question-approval` — the queue of `PENDING_REVIEW` questions with
   Approve/Reject actions (`QuestionApprovalController`).
 
-### Student (`ROLE_STUDENT`) — takes quizzes
-- `/student/dashboard` — assigned quizzes, active practice sets, and recent results.
-- `/student/quizzes` → `/student/quizzes/{id}/take` — a real quiz-taking
+### candidate (`ROLE_CANDIDATE`) — takes quizzes
+- `/candidate/dashboard` — assigned quizzes, active practice sets, and recent results.
+- `/candidate/quizzes` → `/candidate/quizzes/{id}/take` — a real quiz-taking
   screen: renders every question with radio-button options, runs a
   JS countdown timer based on the quiz's duration, and auto-submits when
   time runs out.
-- `/student/quizzes/{id}/submit` — server-side grading: compares selected
+- `/candidate/quizzes/{id}/submit` — server-side grading: compares selected
   option IDs against each `QuestionOption.isCorrect`, applies marks/negative
   marks, saves a `QuizResult` (pass/fail against `passingMarks`).
-- `/student/results` — their own quiz history.
-- `/student/practice` → `/student/practice/{id}/take` — untimed self-practice
+- `/candidate/results` — their own quiz history.
+- `/candidate/practice` → `/candidate/practice/{id}/take` — untimed self-practice
   pulling up to 10 approved questions from the practice set's subject;
   submitting saves a `PracticeAttempt` with a percentage score.
-- `/student/practice-history` — their own practice attempts.
+- `/candidate/practice-history` — their own practice attempts.
 - Which quizzes show up as "assigned" is driven by `QuizAssignment` rows
   (assigned directly to the user, or to a `UserGroup` they belong to) — set
   these up as Admin via **Quiz Management → Assign Users / Assign Groups**.
 
 `SecurityConfig` enforces all of this at the URL level (not just hidden
-menu items) — e.g. a Student hitting `/questions` directly gets a 403, not
+menu items) — e.g. a candidate hitting `/questions` directly gets a 403, not
 just a missing sidebar link.
 
 ## 5. What's fully implemented (working CRUD + views)
@@ -245,18 +245,18 @@ simplifications worth hardening before real use:
   ("here's what you got wrong"), add a `QuizAnswer` entity capturing
   `(quizResult, question, selectedOption)`.
 - **No server-side time enforcement** — the countdown timer in
-  `student/quiz-take.jsp` is client-side JS; a determined user could disable
+  `candidate/quiz-take.jsp` is client-side JS; a determined user could disable
   it. For real exams, stamp `startedAt` when `/take` is first loaded and
   reject `/submit` requests past `startedAt + durationMinutes` server-side.
 - **Single-choice grading only** — `submitQuiz()`/`submitPractice()` in
-  `StudentController` check one selected option per question. Multi-select
+  `CandidateController` check one selected option per question. Multi-select
   questions (`MULTIPLE_CHOICE` type) will need checkbox inputs and
   set-comparison grading.
 - **Practice questions are pulled live by subject** (not a fixed set saved
-  once) — if you add/remove approved questions in a subject, a student's
+  once) — if you add/remove approved questions in a subject, a candidate's
   next practice attempt pulls a different mix. Add a join entity
   (`PracticeSetQuestion`) if you need a fixed, curated set instead.
-- **Retakes are unrestricted** — a student can hit `/take` on the same quiz
+- **Retakes are unrestricted** — a candidate can hit `/take` on the same quiz
   repeatedly, each generating a new `QuizResult`. Add a check against
   existing `QuizResult` rows in `takeQuiz()` if you need one-attempt-only
   enforcement.

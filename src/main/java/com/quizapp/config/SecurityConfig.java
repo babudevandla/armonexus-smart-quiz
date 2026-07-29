@@ -48,8 +48,8 @@ public class SecurityConfig {
                 .requestMatchers("/questions/**", "/quizzes/**", "/question-attachments/**")
                     .hasAnyAuthority("ROLE_ADMIN", "ROLE_INSTRUCTOR")
 
-                // Student-only area
-                .requestMatchers("/student/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT")
+                // Candidate-only area
+                .requestMatchers("/candidate/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_CANDIDATE")
 
                 // Shared across all authenticated roles
                 .requestMatchers("/leaderboard", "/certificates/**", "/profile", "/dashboard", "/").authenticated()

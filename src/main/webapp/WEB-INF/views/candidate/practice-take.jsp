@@ -15,7 +15,7 @@
 </c:if>
 
 <c:if test="${not empty questions}">
-<form method="post" action="${pageContext.request.contextPath}/student/practice/${practiceSet.id}/submit">
+<form method="post" action="${pageContext.request.contextPath}/candidate/practice/${practiceSet.id}/submit">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
     <c:forEach var="question" items="${questions}" varStatus="i">
