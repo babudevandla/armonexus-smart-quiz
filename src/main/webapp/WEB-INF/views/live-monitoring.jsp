@@ -29,7 +29,7 @@
         </c:otherwise>
     </c:choose>
     <p style="color:#9ca3af; font-size:13px; margin-top:12px;">
-        A row appears here the moment a student opens a quiz (an "in progress" record is written
+        A row appears here the moment a candidate opens a quiz (an "in progress" record is written
         with no submission time yet) and disappears the moment they submit. Left-open/abandoned
         attempts will stay listed here indefinitely in this reference build — add a cutoff based on
         <code>startedAt + quiz.durationMinutes</code> if you want stale attempts to auto-expire from this view.

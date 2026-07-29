@@ -47,9 +47,9 @@ public class DataSeeder implements CommandLineRunner {
                 .orElseGet(() -> roleRepository.save(Role.builder()
                         .name("ROLE_INSTRUCTOR").description("Creates quizzes and questions").build()));
 
-        roleRepository.findByName("ROLE_STUDENT")
+        roleRepository.findByName("ROLE_CANDIDATE")
                 .orElseGet(() -> roleRepository.save(Role.builder()
-                        .name("ROLE_STUDENT").description("Takes quizzes").build()));
+                        .name("ROLE_CANDIDATE").description("Takes quizzes").build()));
 
         if (!userRepository.existsByEmail("admin@quizapp.com")) {
             Set<Role> roles = new HashSet<>();
@@ -67,7 +67,7 @@ public class DataSeeder implements CommandLineRunner {
 
         Role reviewerRole = roleRepository.findByName("ROLE_REVIEWER").orElseThrow();
         Role instructorRole = roleRepository.findByName("ROLE_INSTRUCTOR").orElseThrow();
-        Role studentRole = roleRepository.findByName("ROLE_STUDENT").orElseThrow();
+        Role candidateRole = roleRepository.findByName("ROLE_CANDIDATE").orElseThrow();
 
         if (!userRepository.existsByEmail("instructor@quizapp.com")) {
             Set<Role> roles = new HashSet<>();
@@ -89,13 +89,13 @@ public class DataSeeder implements CommandLineRunner {
                     .enabled(true).emailVerified(true).roles(roles).build());
         }
 
-        if (!userRepository.existsByEmail("student@quizapp.com")) {
+        if (!userRepository.existsByEmail("candidate@quizapp.com")) {
             Set<Role> roles = new HashSet<>();
-            roles.add(studentRole);
+            roles.add(candidateRole);
             userRepository.save(User.builder()
-                    .fullName("Sample Student")
-                    .email("student@quizapp.com")
-                    .password(passwordEncoder.encode("Student@123"))
+                    .fullName("Sample Candidate")
+                    .email("candidate@quizapp.com")
+                    .password(passwordEncoder.encode("Candidate@123"))
                     .enabled(true).emailVerified(true).roles(roles).build());
         }
 

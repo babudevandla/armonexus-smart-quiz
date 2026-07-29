@@ -18,7 +18,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <c:if test="${isAdmin}"><th>Student</th></c:if>
+                        <c:if test="${isAdmin}"><th>Candidate</th></c:if>
                         <th>Quiz</th>
                         <th>Score</th>
                         <th>Certificate</th>

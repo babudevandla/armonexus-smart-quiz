@@ -31,7 +31,7 @@ public class DashboardController {
             if ("ROLE_ADMIN".equals(a.getAuthority())) { isAdmin = true; break; }
             if ("ROLE_INSTRUCTOR".equals(a.getAuthority())) return "redirect:/instructor/dashboard";
             if ("ROLE_REVIEWER".equals(a.getAuthority())) return "redirect:/reviewer/dashboard";
-            if ("ROLE_STUDENT".equals(a.getAuthority())) return "redirect:/student/dashboard";
+            if ("ROLE_CANDIDATE".equals(a.getAuthority())) return "redirect:/candidate/dashboard";
         }
 
         if (isAdmin) {

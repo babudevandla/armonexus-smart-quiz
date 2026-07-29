@@ -210,10 +210,10 @@
             </li>
         </sec:authorize>
 
-        <!-- ============ STUDENT MENU ============ -->
-        <sec:authorize access="hasAuthority('ROLE_STUDENT')">
+        <!-- ============ CANDIDATE MENU ============ -->
+        <sec:authorize access="hasAuthority('ROLE_CANDIDATE')">
             <li class="nav-link-item">
-                <a class="nav-link-top" href="${pageContext.request.contextPath}/student/dashboard">
+                <a class="nav-link-top" href="${pageContext.request.contextPath}/candidate/dashboard">
                     <i class="bi bi-speedometer2"></i><span>Dashboard</span>
                 </a>
             </li>
@@ -224,8 +224,8 @@
                 </a>
                 <div class="collapse" id="grp-s-quizzes">
                     <ul>
-                        <li><a href="${pageContext.request.contextPath}/student/quizzes"><i class="bi bi-dot"></i>Available Quizzes</a></li>
-                        <li><a href="${pageContext.request.contextPath}/student/results"><i class="bi bi-dot"></i>My Results</a></li>
+                        <li><a href="${pageContext.request.contextPath}/candidate/quizzes"><i class="bi bi-dot"></i>Available Quizzes</a></li>
+                        <li><a href="${pageContext.request.contextPath}/candidate/results"><i class="bi bi-dot"></i>My Results</a></li>
                     </ul>
                 </div>
             </li>
@@ -236,8 +236,8 @@
                 </a>
                 <div class="collapse" id="grp-s-practice">
                     <ul>
-                        <li><a href="${pageContext.request.contextPath}/student/practice"><i class="bi bi-dot"></i>Practice Sets</a></li>
-                        <li><a href="${pageContext.request.contextPath}/student/practice-history"><i class="bi bi-dot"></i>Practice History</a></li>
+                        <li><a href="${pageContext.request.contextPath}/candidate/practice"><i class="bi bi-dot"></i>Practice Sets</a></li>
+                        <li><a href="${pageContext.request.contextPath}/candidate/practice-history"><i class="bi bi-dot"></i>Practice History</a></li>
                     </ul>
                 </div>
             </li>

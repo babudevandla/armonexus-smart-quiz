@@ -32,7 +32,7 @@
                         <td>
                             <c:choose>
                                 <c:when test="${startable}">
-                                    <a class="btn btn-sm" href="${pageContext.request.contextPath}/student/quizzes/${q.id}/take">Start Quiz</a>
+                                    <a class="btn btn-sm" href="${pageContext.request.contextPath}/candidate/quizzes/${q.id}/take">Start Quiz</a>
                                 </c:when>
                                 <c:otherwise>
                                     <button class="btn btn-sm btn-secondary" disabled style="opacity:0.6; cursor:not-allowed;">

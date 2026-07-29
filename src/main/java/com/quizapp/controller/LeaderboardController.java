@@ -39,12 +39,12 @@ public class LeaderboardController {
 
         List<QuizResult> passedResults;
         if (isAdmin) {
-            // Admin sees every passed attempt across all students
+            // Admin sees every passed attempt across all candidate
             passedResults = quizResultRepository.findBySubmittedAtIsNotNull().stream()
                     .filter(QuizResult::getPassed)
                     .toList();
         } else {
-            // Everyone else (Student) only sees their own passed attempts
+            // Everyone else (Candidate) only sees their own passed attempts
             User me = userRepository.findByEmail(authentication.getName()).orElseThrow();
             passedResults = quizResultRepository.findByUserIdAndSubmittedAtIsNotNull(me.getId()).stream()
                     .filter(QuizResult::getPassed)

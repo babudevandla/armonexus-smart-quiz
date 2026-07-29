@@ -23,7 +23,7 @@
 
 <div class="card">
     <h3>Welcome, Instructor</h3>
-    <p>Create questions and quizzes for your students. New questions you submit go to
+    <p>Create questions and quizzes for your candidates. New questions you submit go to
        <strong>Pending Review</strong> until a reviewer approves them — only approved
        questions can be added to a quiz.</p>
     <div style="display:flex; gap:12px; margin-top:16px;">

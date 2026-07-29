@@ -31,7 +31,7 @@ public class CertificateController {
     /**
      * Generates (or re-generates) the certificate PDF for a passed quiz
      * result, then redirects back to the certificates list. Works for both
-     * the Admin (any result) and the Student who owns that result.
+     * the Admin (any result) and the Candidate who owns that result.
      */
     @GetMapping("/certificates/{resultId}/generate")
     public String generate(@PathVariable Long resultId,

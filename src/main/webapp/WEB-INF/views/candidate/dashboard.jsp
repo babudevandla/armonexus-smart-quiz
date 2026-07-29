@@ -1,5 +1,5 @@
 <%@ include file="../layout/taglibs.jsp" %>
-<c:set var="pageTitle" value="Student Dashboard" scope="request"/>
+<c:set var="pageTitle" value="Candidate Dashboard" scope="request"/>
 <%@ include file="../layout/page-head.jsp" %>
 
 <div class="card">
@@ -34,7 +34,7 @@
                         <td>
                             <c:choose>
                                 <c:when test="${startable}">
-                                    <a class="btn btn-sm" href="${pageContext.request.contextPath}/student/quizzes/${q.id}/take">Start</a>
+                                    <a class="btn btn-sm" href="${pageContext.request.contextPath}/candidate/quizzes/${q.id}/take">Start</a>
                                 </c:when>
                                 <c:otherwise>
                                     <button class="btn btn-sm btn-secondary" disabled style="opacity:0.6; cursor:not-allowed;">
@@ -66,7 +66,7 @@
                     <tr>
                         <td>${p.title}</td>
                         <td>${p.subject != null ? p.subject.name : '-'}</td>
-                        <td><a class="btn btn-sm" href="${pageContext.request.contextPath}/student/practice/${p.id}/take">Practice</a></td>
+                        <td><a class="btn btn-sm" href="${pageContext.request.contextPath}/candidate/practice/${p.id}/take">Practice</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>

@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * Single source of truth for "is this quiz open right now?" — used by the
- * Student take/submit flow, the Admin Quiz Management list, the Instructor's
+ * Candidate take/submit flow, the Admin Quiz Management list, the Instructor's
  * My Quizzes list, and Live Monitoring, so a quiz reads as closed/expired
  * consistently everywhere the moment its schedule window ends.
  */

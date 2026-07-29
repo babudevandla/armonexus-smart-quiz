@@ -15,7 +15,7 @@ public class LiveMonitoringController {
     @GetMapping("/live-monitoring")
     public String liveMonitoring(Model model) {
         // "in progress" = an attempt that has started (a row was written when
-        // the student opened the quiz) but not yet submitted
+        // the candidate opened the quiz) but not yet submitted
         model.addAttribute("inProgressAttempts", quizResultRepository.findBySubmittedAtIsNull());
         return "live-monitoring";
     }
