@@ -2,6 +2,7 @@
 <c:set var="pageTitle" value="${subject.id == null ? 'Add Subject' : 'Edit Subject'}" scope="request"/>
 <%@ include file="../layout/page-head.jsp" %>
 
+
 <div class="card" style="max-width:500px;">
     <h3>${subject.id == null ? 'Add Subject' : 'Edit Subject'}</h3>
     <form:form modelAttribute="subject" method="post" action="${pageContext.request.contextPath}/subjects/save">
@@ -9,6 +10,7 @@
         <div class="form-group">
             <label>Name</label>
             <form:input path="name" cssClass="form-control" required="required"/>
+            <form:errors path="name" cssClass="text-danger"/>
         </div>
         <div class="form-group">
             <label>Description</label>

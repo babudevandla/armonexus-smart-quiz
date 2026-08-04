@@ -3,6 +3,7 @@
 <%@ include file="../layout/page-head.jsp" %>
 <div class="card" style="max-width:500px;">
     <h3>${level.id == null ? 'Add Level' : 'Edit Level'}</h3>
+
     <form:form modelAttribute="level" method="post" action="${pageContext.request.contextPath}/difficulty-levels/save">
         <form:hidden path="id"/>
         <div class="form-group">
