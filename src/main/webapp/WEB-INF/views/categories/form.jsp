@@ -4,6 +4,7 @@
 
 <div class="card" style="max-width:500px;">
     <h3>${category.id == null ? 'Add Category' : 'Edit Category'}</h3>
+
     <form method="post" action="${pageContext.request.contextPath}/categories/save">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="id" value="${category.id}"/>

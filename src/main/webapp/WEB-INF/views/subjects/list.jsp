@@ -2,6 +2,7 @@
 <c:set var="pageTitle" value="Subjects" scope="request"/>
 <%@ include file="../layout/page-head.jsp" %>
 
+
 <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
         <h3 style="margin:0;">Subjects</h3>
