@@ -7,7 +7,7 @@
         <form:hidden path="id"/>
         <div class="form-group">
             <label>Name (e.g. SINGLE_CHOICE, MULTIPLE_CHOICE, TRUE_FALSE)</label>
-            <form:input path="name" cssClass="form-control" required="required"/>
+            <form:input path="name" cssClass="form-control" required="required" readonly="true"/>
         </div>
         <button type="submit" class="btn">Save</button>
         <a class="btn btn-secondary" href="${pageContext.request.contextPath}/question-types">Cancel</a>

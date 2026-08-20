@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.quizapp.repository.AnnouncementRepository;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class DashboardController {
     private final QuestionRepository questionRepository;
     private final QuizRepository quizRepository;
     private final QuizResultRepository quizResultRepository;
+    private final AnnouncementRepository announcementRepository;
 
     /**
      * Central landing route after login. Routes each role to its own
@@ -38,10 +40,20 @@ public class DashboardController {
             model.addAttribute("totalUsers", userRepository.count());
             model.addAttribute("totalQuestions", questionRepository.count());
             model.addAttribute("totalQuizzes", quizRepository.count());
-            // "completed" attempts only, so someone mid-exam doesn't inflate this count
-            model.addAttribute("totalAttempts", quizResultRepository.findBySubmittedAtIsNotNull().size());
+
+            model.addAttribute(
+                    "totalAttempts",
+                    quizResultRepository.findBySubmittedAtIsNotNull().size()
+            );
+
+            model.addAttribute(
+                    "announcements",
+                    announcementRepository.findByActiveTrue()
+            );
+
             return "dashboard";
         }
+
 
         // fallback for a user with no recognized role
         return "redirect:/profile";

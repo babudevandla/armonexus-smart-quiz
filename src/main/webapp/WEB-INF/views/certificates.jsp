@@ -34,8 +34,13 @@
                         <td>
                             <c:choose>
                                 <c:when test="${not empty r.certificateUrl}">
-                                    <a class="btn btn-sm" href="${pageContext.request.contextPath}${r.certificateUrl}" target="_blank">Download</a>
-                                    <a class="btn btn-sm btn-secondary" href="${pageContext.request.contextPath}/certificates/${r.id}/generate">Regenerate</a>
+                                    <a class="btn btn-sm"
+                                       style="background-color: yellow; color: black;"
+                                       href="${pageContext.request.contextPath}${r.certificateUrl}"
+                                       target="_blank">
+                                        Download
+                                    </a>
+                                    <a class="btn btn-sm" style="background-color: orange; color: black;" href="${pageContext.request.contextPath}/certificates/${r.id}/generate">Regenerate</a>
                                 </c:when>
                                 <c:otherwise>
                                     <a class="btn btn-sm btn-success" href="${pageContext.request.contextPath}/certificates/${r.id}/generate">Generate</a>

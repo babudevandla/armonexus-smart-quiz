@@ -29,7 +29,17 @@
                     </c:choose>
                 </td>
                 <td>
-                    <a class="btn btn-sm" href="${pageContext.request.contextPath}/questions/${q.id}/edit">Edit</a>
+                    <c:choose>
+                        <c:when test="${q.status == 'PENDING_REVIEW'}">
+                            <a class="btn btn-sm btn-warning" href="${pageContext.request.contextPath}/questions/${q.id}/review">Review</a>
+                        </c:when>
+                        <c:when test="${q.status == 'DRAFT'}">
+                            <a class="btn btn-sm" href="${pageContext.request.contextPath}/questions/${q.id}/edit">Edit</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="btn btn-sm" href="${pageContext.request.contextPath}/questions/${q.id}/edit">View</a>
+                        </c:otherwise>
+                    </c:choose>
                     <a class="btn btn-sm btn-danger" href="${pageContext.request.contextPath}/questions/${q.id}/delete"
                        onclick="return confirm('Delete this question?');">Delete</a>
                 </td>
