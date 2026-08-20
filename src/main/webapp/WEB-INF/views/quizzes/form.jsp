@@ -56,7 +56,7 @@
         </div>
 
         <div class="form-group">
-            <label>Select Questions (approved only) — hold Ctrl/Cmd to select multiple</label>
+            <label>Select Questions (approved only) hold Ctrl/Cmd to select multiple</label>
             <select name="questionIds" class="form-control" multiple size="8">
                 <c:forEach var="ques" items="${approvedQuestions}">
                     <c:set var="isSelected" value="false"/>

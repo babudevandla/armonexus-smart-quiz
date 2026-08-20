@@ -1,20 +1,43 @@
 package com.quizapp.controller;
 
-import com.quizapp.entity.*;
-import com.quizapp.repository.*;
+
+import com.quizapp.entity.Question;
+import com.quizapp.entity.QuestionOption;
+import com.quizapp.entity.QuestionStatus;
+import com.quizapp.entity.Quiz;
+import com.quizapp.entity.QuizQuestion;
+import com.quizapp.entity.QuizResult;
+import com.quizapp.entity.PracticeSet;
+import com.quizapp.entity.PracticeAttempt;
+import com.quizapp.entity.User;
+import com.quizapp.entity.UserGroup;
+import com.quizapp.repository.AnnouncementRepository;
+import com.quizapp.repository.UserRepository;
+import com.quizapp.repository.PracticeAttemptRepository;
+import com.quizapp.repository.PracticeSetRepository;
+import com.quizapp.repository.QuestionRepository;
+import com.quizapp.repository.QuizAssignmentRepository;
+import com.quizapp.repository.QuizRepository;
+import com.quizapp.repository.QuizResultRepository;
 import com.quizapp.service.QuizScheduleStatusService;
 import com.quizapp.service.ScheduleStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Controller
 @RequestMapping("/candidate")
 @RequiredArgsConstructor
@@ -28,11 +51,14 @@ public class CandidateController {
     private final PracticeSetRepository practiceSetRepository;
     private final PracticeAttemptRepository practiceAttemptRepository;
     private final QuestionRepository questionRepository;
+    private final AnnouncementRepository announcementRepository;
+
 
     // ---------- Dashboard ----------
 
     @GetMapping("/dashboard")
     public String dashboard(Authentication authentication, Model model) {
+        log.info("Fetching dashboard data for candidate");
         User me = currentUser(authentication);
         List<Quiz> quizzes = assignedQuizzesFor(me);
         model.addAttribute("assignedQuizzes", quizzes);
@@ -40,6 +66,9 @@ public class CandidateController {
         model.addAttribute("recentResults", quizResultRepository.findByUserIdAndSubmittedAtIsNotNull(me.getId()));
         model.addAttribute("practiceSets", practiceSetRepository.findAll().stream()
                 .filter(PracticeSet::getActive).toList());
+        // add active announcements so users see what admins publish
+        model.addAttribute("announcements", announcementRepository.findByActiveTrue());
+        log.info("Dashboard data added to model for candidate: {}", me.getEmail());
         return "candidate/dashboard";
     }
 
@@ -47,14 +76,17 @@ public class CandidateController {
 
     @GetMapping("/quizzes")
     public String availableQuizzes(Authentication authentication, Model model) {
+        log.info("Fetching available quizzes for candidate");
         User me = currentUser(authentication);
         List<Quiz> quizzes = assignedQuizzesFor(me);
         model.addAttribute("quizzes", quizzes);
         model.addAttribute("quizStatusMap", quizScheduleStatusService.buildStatusMap(quizzes));
+        log.info("Available quizzes added to model for candidate: {}", me.getEmail());
         return "candidate/quizzes";
     }
 
     private List<Quiz> assignedQuizzesFor(User user) {
+        log.info("Fetching assigned quizzes for user: {}", user.getEmail());
         Set<Long> quizIds = new LinkedHashSet<>();
 
         quizAssignmentRepository.findByUserId(user.getId())
@@ -65,6 +97,7 @@ public class CandidateController {
             quizAssignmentRepository.findByGroupIdIn(groupIds)
                     .forEach(a -> quizIds.add(a.getQuiz().getId()));
         }
+        log.info("Assigned quiz IDs for user {}: {}", user.getEmail(), quizIds);
 
         return quizIds.stream()
                 .map(id -> quizRepository.findById(id).orElse(null))
@@ -78,20 +111,17 @@ public class CandidateController {
     @GetMapping("/quizzes/{id}/take")
     public String takeQuiz(@PathVariable Long id, Authentication authentication,
                             Model model, RedirectAttributes redirectAttributes) {
+        log.info("Candidate {} is attempting to take quiz with ID: {}", authentication.getName(), id);
         Quiz quiz = quizRepository.findById(id).orElseThrow();
 
         ScheduleStatus status = quizScheduleStatusService.resolveStatus(id);
         if (!status.isStartable()) {
             redirectAttributes.addFlashAttribute("errorMessage", scheduleMessage(status));
+            log.info("Quiz with ID: {} is not startable for candidate {}. Status: {}", id, authentication.getName(), status);
             return "redirect:/candidate/quizzes";
         }
 
         User me = currentUser(authentication);
-
-        // Write an "in progress" row (submittedAt still null) the moment the
-        // candidate opens the quiz, so Live Monitoring can actually see them.
-        // If they reload/reopen the same quiz, reuse the existing row instead
-        // of creating duplicates.
         quizResultRepository.findFirstByQuizIdAndUserIdAndSubmittedAtIsNull(id, me.getId())
                 .orElseGet(() -> quizResultRepository.save(QuizResult.builder()
                         .quiz(quiz)
@@ -104,6 +134,7 @@ public class CandidateController {
                         .build()));
 
         model.addAttribute("quiz", quiz);
+        log.info("Quiz with ID: {} is ready for candidate {} to take", id, authentication.getName());
         return "candidate/quiz-take";
     }
 
@@ -112,15 +143,15 @@ public class CandidateController {
                               @RequestParam Map<String, String> allParams,
                               Authentication authentication,
                               RedirectAttributes redirectAttributes) {
+        log.info("Candidate {} is submitting quiz with ID: {}", authentication.getName(), id);
         Quiz quiz = quizRepository.findById(id).orElseThrow();
         User me = currentUser(authentication);
 
-        // Server-side re-check: never grade/save a submission for a quiz
-        // whose schedule window has since closed (covers a browser tab left
-        // open past the end time, or a direct POST bypassing the UI).
+
         ScheduleStatus status = quizScheduleStatusService.resolveStatus(id);
         if (!status.isStartable()) {
             redirectAttributes.addFlashAttribute("errorMessage", scheduleMessage(status));
+            log.info("Quiz with ID: {} is not startable for candidate {} upon submission. Status: {}", id, authentication.getName(), status);
             return "redirect:/candidate/quizzes";
         }
 
@@ -168,6 +199,7 @@ public class CandidateController {
         redirectAttributes.addFlashAttribute("successMessage",
                 "Quiz submitted! Score: " + scoreObtained + " / " + totalMarks +
                 (passed ? " — Passed" : " — Not passed"));
+        log.info("Quiz with ID: {} submitted by candidate {}. Score: {} / {}. Passed: {}", id, authentication.getName(), scoreObtained, totalMarks, passed);
         return "redirect:/candidate/results";
     }
 
@@ -183,8 +215,10 @@ public class CandidateController {
 
     @GetMapping("/results")
     public String myResults(Authentication authentication, Model model) {
+        log.info("Fetching quiz results for candidate: {}", authentication.getName());
         User me = currentUser(authentication);
         model.addAttribute("results", quizResultRepository.findByUserIdAndSubmittedAtIsNotNull(me.getId()));
+        log.info("Fetching quiz results for candidate: {}", me.getEmail());
         return "candidate/results";
     }
 
@@ -199,6 +233,7 @@ public class CandidateController {
 
     @GetMapping("/practice/{id}/take")
     public String takePractice(@PathVariable Long id, Model model) {
+        log.info("Fetching practice set with ID: {}", id);
         PracticeSet practiceSet = practiceSetRepository.findById(id).orElseThrow();
 
         List<Question> questions = practiceSet.getSubject() != null
@@ -210,6 +245,7 @@ public class CandidateController {
 
         model.addAttribute("practiceSet", practiceSet);
         model.addAttribute("questions", questions);
+        log.info("Practice set with ID: {} and {} questions fetched for practice", id, questions.size());
         return "candidate/practice-take";
     }
 
@@ -218,6 +254,7 @@ public class CandidateController {
                                   @RequestParam Map<String, String> allParams,
                                   Authentication authentication,
                                   RedirectAttributes redirectAttributes) {
+        log.info("Candidate {} is submitting practice set with ID: {}", authentication.getName(), id);
         PracticeSet practiceSet = practiceSetRepository.findById(id).orElseThrow();
         User me = currentUser(authentication);
 
@@ -252,13 +289,16 @@ public class CandidateController {
         redirectAttributes.addFlashAttribute("successMessage",
                 "Practice submitted! You scored " + correct + " / " + total +
                 " (" + String.format("%.1f", scorePercent) + "%)");
+        log.info("Practice set with ID: {} submitted by candidate {}. Score: {} / {} ({}%)", id, authentication.getName(), correct, total, scorePercent);
         return "redirect:/candidate/practice-history";
     }
 
     @GetMapping("/practice-history")
     public String practiceHistory(Authentication authentication, Model model) {
+        log.info("Fetching practice history for candidate: {}", authentication.getName());
         User me = currentUser(authentication);
         model.addAttribute("attempts", practiceAttemptRepository.findByUserId(me.getId()));
+        log.info("Practice history fetched for candidate: {}", me.getEmail());
         return "candidate/practice-history";
     }
 
